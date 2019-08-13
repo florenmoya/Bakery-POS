@@ -16,11 +16,10 @@ class CreateDeliveriesItemsTable extends Migration
         Schema::create('deliveries_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->Integer('deliveries_id');
-            $table->string('description');
-            $table->string('type');
+            $table->Integer('items_id');
             $table->Integer('price');
+            $table->Integer('item_cost')->nullable();
             $table->Integer('quantity');
-            $table->string('category');
             $table->timestamps();
         });
     }

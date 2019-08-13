@@ -11,7 +11,6 @@ class ItemsController extends Controller
     {
 
         $data = $items->all();
-
         return response($data); 
 
     }

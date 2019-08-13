@@ -32,3 +32,12 @@ Route::middleware('auth:api')->get('/categories', 'Api\CategoriesController@all'
 Route::middleware('auth:api')->post('/categories/store', 'Api\CategoriesController@store');
 Route::middleware('auth:api')->post('/categories/update', 'Api\CategoriesController@update');
 Route::middleware('auth:api')->post('/categories/delete', 'Api\CategoriesController@destroy');
+
+Route::middleware('auth:api')->get('/sales', 'Api\SalesController@all');
+Route::middleware('auth:api')->get('/sales/register', 'Api\SalesController@index');
+Route::middleware('auth:api')->post('/sales', 'Api\SalesController@store');
+Route::middleware('auth:api')->post('/sales/register', 'Api\SalesController@sale_register_store');
+Route::middleware('auth:api')->post('/sales/register/close', 'Api\SalesController@sales_register_close_store');
+
+Route::middleware('auth:api')->get('/deliveries', 'Api\DeliveriesController@select');
+Route::middleware('auth:api')->post('/deliveries', 'Api\DeliveriesController@store');

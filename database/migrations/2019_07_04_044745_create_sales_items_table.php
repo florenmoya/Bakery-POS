@@ -16,11 +16,10 @@ class CreateSalesItemsTable extends Migration
         Schema::create('sales_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->Integer('sales_id');
-            $table->string('description');
-            $table->string('type');
+            $table->Integer('items_id');
             $table->Integer('price');
+            $table->Integer('item_cost')->nullable();
             $table->Integer('quantity');
-            $table->string('category');
             $table->timestamps();
         });
     }

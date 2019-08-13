@@ -16,7 +16,7 @@ class CreateSalesRegistersTable extends Migration
         Schema::create('sales_registers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->Integer('amount');
-            $table->Integer('user_id');
+            $table->string('username');
             $table->boolean('active');
             $table->timestamps();
         });
