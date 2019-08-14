@@ -16,7 +16,7 @@ class CreateSalesItemsTable extends Migration
         Schema::create('sales_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->Integer('sales_id');
-            $table->Integer('items_id');
+            $table->Integer('item_id');
             $table->Integer('price');
             $table->Integer('item_cost')->nullable();
             $table->Integer('quantity');

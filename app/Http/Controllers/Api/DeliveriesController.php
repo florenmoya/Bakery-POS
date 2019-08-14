@@ -6,7 +6,7 @@ use App\Deliver;
 use App\DeliveriesItem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Carbon\Carbon;
 class DeliveriesController extends Controller
 {
 
@@ -36,4 +36,9 @@ class DeliveriesController extends Controller
             
         return response('Created', 201);
 	}
+        public function report_deliveries()
+    {
+        $data = DeliveriesItem::where('created_at', '>=', Carbon::now()->startOfMonth())->with('Item')->get();
+        return response($data);
+    }
 }

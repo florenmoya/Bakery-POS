@@ -41,3 +41,6 @@ Route::middleware('auth:api')->post('/sales/register/close', 'Api\SalesControlle
 
 Route::middleware('auth:api')->get('/deliveries', 'Api\DeliveriesController@select');
 Route::middleware('auth:api')->post('/deliveries', 'Api\DeliveriesController@store');
+
+Route::middleware('auth:api')->get('/reports/sales', 'Api\SalesController@report_sales');
+Route::middleware('auth:api')->get('/reports/deliveries', 'Api\DeliveriesController@report_deliveries');

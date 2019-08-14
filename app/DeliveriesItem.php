@@ -12,4 +12,8 @@ class DeliveriesItem extends Model
 		{
 		  return $this->belongsTo('App\Deliver');
 		}
+		public function Item()
+	    {
+	            return $this->belongsTo('App\Item');
+	    }
 }

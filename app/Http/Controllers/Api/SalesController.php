@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Item;
 use App\Sales;
 use App\SalesItem;
 use App\SalesRegister;
 use App\RegistersActivity;
+
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -39,7 +42,7 @@ class SalesController extends Controller
                         'quantity' => $items['cart_quantity'],
                         'price' => $items['price']*$items['cart_quantity'],
                         'item_cost' => $items['item_cost'],
-                        'items_id' => $items['id'],
+                        'item_id' => $items['id'],
                         ]);
                     }
             
@@ -64,5 +67,10 @@ class SalesController extends Controller
 
 		return response($RegistersClosingAmount);
 
+    }
+    public function report_sales()
+    {
+        $data = SalesItem::with('Item')->get();
+		return response($data);
     }
 }

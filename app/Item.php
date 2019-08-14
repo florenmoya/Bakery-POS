@@ -11,6 +11,14 @@ class Item extends Model
         protected $guarded = [];
         protected static $logUnguarded = true;
 
+        public function SalesItem()
+    {
+            return $this->hasMany('App\SalesItem');
+    }
+            public function DeliveriesItem()
+    {
+            return $this->hasMany('App\DeliveriesItem');
+    }
     public function itemCheckout($id, $quantity , $oldquantity)
     {
     			$id->quantity = $oldquantity - $quantity;
