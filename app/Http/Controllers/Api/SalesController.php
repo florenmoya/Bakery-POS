@@ -46,7 +46,7 @@ class SalesController extends Controller
                         ]);
 
                         $item = Item::find($items['id']);
-                        $item->quantity = $item->quantity + $items['cart_quantity'];
+                        $item->quantity = $item->quantity - $items['cart_quantity'];
                         $item->save();
                     }
             
