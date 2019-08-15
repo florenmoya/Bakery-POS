@@ -41,7 +41,7 @@ class DeliveriesController extends Controller
 	}
         public function report_deliveries()
     {
-        $data = DeliveriesItem::where('created_at', '>=', Carbon::now()->startOfMonth())->with('Item')->get();
+        $data = DeliveriesItem::where('created_at', '>=', Carbon::now()->startOfMonth())->selectRaw('sum(quantity) as total_quantity, `price`, `item_cost`')->with('Item')->get();
         return response($data);
     }
 }
