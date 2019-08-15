@@ -44,6 +44,10 @@ class SalesController extends Controller
                         'item_cost' => $items['item_cost'],
                         'item_id' => $items['id'],
                         ]);
+                        
+                        $item = Item::find($items['id']);
+                        $item->quantity = $item->quantity - $items['cart_quantity'];
+                        $item->save();
                     }
             
         return response('Created', 201);
