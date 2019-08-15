@@ -32,6 +32,9 @@ class DeliveriesController extends Controller
                         'item_cost' => $items['item_cost'],
                         'items_id' => $items['id'],
                         ]);
+                        $item = Item::find($items['id']);
+                        $item->quantity = $item->quantity + $items['cart_quantity'];
+                        $item->save();
                     }
             
         return response('Created', 201);
