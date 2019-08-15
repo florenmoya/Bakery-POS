@@ -10,10 +10,10 @@ class DeliveriesItem extends Model
 
         public function Deliver()
 		{
-		  return $this->belongsTo('App\Deliver');
+		  	return $this->belongsTo('App\Deliver');
 		}
 		public function Item()
 	    {
-	            return $this->belongsTo('App\Item');
+	     	return $this->belongsTo('App\Item');
 	    }
 }

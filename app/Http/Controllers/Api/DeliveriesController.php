@@ -30,7 +30,7 @@ class DeliveriesController extends Controller
                         'quantity' => $items['cart_quantity'],
                         'price' => $items['price']*$items['cart_quantity'],
                         'item_cost' => $items['item_cost'],
-                        'items_id' => $items['id'],
+                        'item_id' => $items['id'],
                         ]);
                         $item = Item::find($items['id']);
                         $item->quantity = $item->quantity + $items['cart_quantity'];
