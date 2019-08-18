@@ -19,15 +19,8 @@ class Item extends Model
     {
             return $this->hasMany('App\DeliveriesItem');
     }
-    public function itemCheckout($id, $quantity , $oldquantity)
+    public function Category()
     {
-    			$id->quantity = $oldquantity - $quantity;
-                $id->save();
-    }
-
-    public function itemDelivery($id, $quantity , $oldquantity)
-    {
-    			$id->quantity = $oldquantity + $quantity;
-                $id->save();
+            return $this->belongsTo('App\Category');
     }
 }

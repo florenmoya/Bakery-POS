@@ -25,7 +25,7 @@ class CreateItemsTable extends Migration
             $table->Integer('price');
             $table->Integer('item_cost')->nullable();
             $table->Integer('quantity')->nullable();
-            $table->string('category')->nullable();
+            $table->string('category_id')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
         });

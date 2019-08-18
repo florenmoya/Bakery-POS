@@ -36,7 +36,6 @@ class DeliveriesController extends Controller
                         $item->quantity = $item->quantity + $items['cart_quantity'];
                         $item->save();
                     }
-            
         return response('Created', 201);
 	}
         public function report_deliveries()

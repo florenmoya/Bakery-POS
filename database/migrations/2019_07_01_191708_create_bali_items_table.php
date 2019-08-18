@@ -16,11 +16,11 @@ class CreateBaliItemsTable extends Migration
         Schema::create('bali_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->Integer('balis_id');
+            $table->Integer('category_id');
             $table->string('description');
             $table->string('type');
             $table->Integer('price');
             $table->Integer('quantity');
-            $table->string('category');
             $table->timestamps();
         });
     }

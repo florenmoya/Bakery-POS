@@ -16,11 +16,10 @@ class CreateRefundsItemsTable extends Migration
         Schema::create('refunds_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->Integer('refunds_id');
-            $table->string('description');
-            $table->string('type');
+            $table->Integer('item_id');
             $table->Integer('price');
+            $table->Integer('item_cost')->nullable();
             $table->Integer('quantity');
-            $table->string('category');
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 use App\Item;
+use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -10,7 +11,7 @@ class ItemsController extends Controller
    public function all(Item $items)
     {
 
-        $data = $items->all();
+        $data = $items->with('Category')->get();
         return response($data); 
 
     }
@@ -24,25 +25,24 @@ class ItemsController extends Controller
             'price'  => ['required'],
             'item_cost'  => [],
             'type'  => ['required'],
-            'category'  => ['required'],
+            'category_id'  => ['required'],
             'notes'  => []
         ]);
         $items = Item::create($attributes);
-        return response($items, 201);
+        return response($items);
         
     }
     public function update(Request $request)
     {
-        $item = Item::find($request->id);
+        $update = Item::where('id', $request->id)
+                ->update(['description' => $request->description,
+        'quantity' => $request->quantity,
+        'category_id' => $request->category_id,
+        'type' => $request->type,
+        'price' => $request->price,
+        'notes' => $request->notes]);
 
-        $item->description = $request->description;
-        $item->quantity = $request->quantity;
-        $item->category = $request->category;
-        $item->price = $request->price;
-        $item->notes = $request->notes;
-
-        $item->save();
-        return response('Items have been updated', 201);
+        return response($update);
     }
     public function destroy(Request $request)
     {

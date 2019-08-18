@@ -33,7 +33,8 @@ class SalesController extends Controller
     public function store(Request $request)
 	{
   
-                $sales_id = Sales::create(['registers_activity_id' => $request->register_id])->id;
+                $currentRegister = RegistersActivity::orderBy('created_at', 'desc')->first()->id;
+                $sales_id = Sales::create(['registers_activity_id' =>$currentRegister])->id;
 
                 foreach($request->items as $items)
                     {
