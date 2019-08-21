@@ -20,7 +20,7 @@ class CategoriesController extends Controller
     {
 
         $attributes = request()->validate([
-            'category_name' => ['required']
+            'title' => ['required']
         ]);
 
         Category::create($attributes);
@@ -32,7 +32,7 @@ class CategoriesController extends Controller
     {
         $data = Category::find($request->id);
 
-        $data->category_name = $request->category_name;
+        $data->title = $request->title;
 
         $data->save();
         return response('Categories have been updated', 201);
