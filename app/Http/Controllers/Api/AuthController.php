@@ -39,7 +39,7 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8']
             ]);
         if(!auth()->attempt($login)){
-            return response(['message' => 'Invalid credentials']);
+            return response(['message' => 'Invalid credentials'], 401);
         }
         else{
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
