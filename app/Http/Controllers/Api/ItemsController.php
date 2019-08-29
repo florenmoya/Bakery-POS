@@ -35,12 +35,14 @@ class ItemsController extends Controller
     public function update(Request $request)
     {
         $update = Item::where('id', $request->id)
-                ->update(['description' => $request->description,
+                ->update([
+        'description' => $request->description,
         'quantity' => $request->quantity,
         'category_id' => $request->category_id,
         'type' => $request->type,
         'price' => $request->price,
-        'notes' => $request->notes]);
+        'notes' => $request->notes
+    ]);
 
         return response($update);
     }

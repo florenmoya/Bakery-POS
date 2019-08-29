@@ -49,7 +49,7 @@ class SalesController extends Controller
                         $item->quantity = $item->quantity - $items['cart_quantity'];
                         $item->save();
                     }
-           Mail::to('test@test.com')->send(new SupplyDepleted());
+           // Mail::to('test@test.com')->send(new SupplyDepleted());
         return response('Created', 201);
 	}
 	public function sale_register_store(Request $request)
