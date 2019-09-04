@@ -7,6 +7,7 @@ use App\SalesItem;
 use App\SalesRegister;
 use App\RegistersActivity;
 use App\Mail\SupplyDepleted;
+use App\Mail\CloseRegister;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -31,26 +32,31 @@ class SalesController extends Controller
 
     public function store(Request $request)
 	{
-  
+                  if(!$request->items){
+                        return response($request->items, 404);
+                  }
                 $currentRegister = RegistersActivity::orderBy('created_at', 'desc')->first()->id;
                 $sales_id = Sales::create(['registers_activity_id' =>$currentRegister])->id;
-
+                $query = array();
                 foreach($request->items as $items)
                     {
-                        $createddata = SalesItem::create([
+                        $data = SalesItem::create([
                         'sales_id' => $sales_id,
                         'quantity' => $items['cart_quantity'],
                         'price' => $items['price']*$items['cart_quantity'],
                         'item_cost' => $items['item_cost'],
                         'item_id' => $items['id'],
                         ]);
+                        $query = array_merge($query, array($data));
 
                         $item = Item::find($items['id']);
                         $item->quantity = $item->quantity - $items['cart_quantity'];
                         $item->save();
+                    //     if($item->quantity <= 0){
+                    //     Mail::to('test@test.com')->send(new CloseRegister($item));
+                    // }
                     }
-           // Mail::to('test@test.com')->send(new SupplyDepleted());
-        return response('Created', 201);
+        return response($query);
 	}
 	public function sale_register_store(Request $request)
 	{
@@ -69,6 +75,9 @@ class SalesController extends Controller
 		$RegistersClosingAmount->save();
 		SalesRegister::updateOrCreate(['id' => 1], ['active' => false]);
 
+                        $item = Item::where('quantity', 0)->get();
+                        // Mail::to('test@test.com')->send(new SupplyDepleted($item));
+                    
 		return response($RegistersClosingAmount);
 
     }

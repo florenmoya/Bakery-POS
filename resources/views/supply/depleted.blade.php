@@ -1,65 +1,97 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+    <style>
+    table {
+        border-collapse: collapse;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
+    th,
+    td {
+        padding: 15px;
+        background-color: #e8f9ff;
+        color: #000;
+    }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-</style>
+    th {
+        text-align: left;
+    }
+
+    thead {
+        th {
+            background-color: #e0f7ff;
+        }
+    }
+
+    tbody {
+        tr {
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        td {
+            position: relative;
+
+            &:hover {
+                &:before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: -9999px;
+                    bottom: -9999px;
+                    background-color: rgba(255, 255, 255, 0.2);
+                    z-index: -1;
+                }
+            }
+        }
+    }
+
+    </style>
 </head>
+
 <body>
-
-<h2>HTML Table</h2>
-
+    @php
+    $query = $data;
+    @endphp
+<h1> Breads </h1>    
 <table>
-  <tr>
-    <th>Company</th>
-    <th>Contact</th>
-    <th>Country</th>
-  </tr>
-  <tr>
-    <td>Alfreds Futterkiste</td>
-    <td>Maria Anders</td>
-    <td>Germany</td>
-  </tr>
-  <tr>
-    <td>Centro comercial Moctezuma</td>
-    <td>Francisco Chang</td>
-    <td>Mexico</td>
-  </tr>
-  <tr>
-    <td>Ernst Handel</td>
-    <td>Roland Mendel</td>
-    <td>Austria</td>
-  </tr>
-  <tr>
-    <td>Island Trading</td>
-    <td>Helen Bennett</td>
-    <td>UK</td>
-  </tr>
-  <tr>
-    <td>Laughing Bacchus Winecellars</td>
-    <td>Yoshi Tannamuri</td>
-    <td>Canada</td>
-  </tr>
-  <tr>
-    <td>Magazzini Alimentari Riuniti</td>
-    <td>Giovanni Rovelli</td>
-    <td>Italy</td>
-  </tr>
-</table>
-
+        <tr>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Category</th>
+        </tr>
+        @foreach ($query as $data)
+        @if($data['category']['title'] == 'Bread' || $data['category']['title'] == 'Cake')
+        <tr>
+            <td>{{$data['description']}}</td>
+            <td>{{$data['quantity']}}</td>
+            <td>{{$data['category']['title']}}</td>
+        </tr>
+        @endif
+        @endforeach
+    </table>
+    <h1> Other Items </h1>
+    <table>
+        <tr>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Category</th>
+        </tr>
+        @foreach ($query as $data)
+        @if($data['category']['title'] != "Bread" && $data['category']['title'] != 'Cake')
+        <tr>
+            <td>{{$data['description']}}</td>
+            <td>{{$data['quantity']}}</td>
+            <td>{{$data['category']['title']}}</td>
+        </tr>
+        @endif
+        @endforeach
+    </table>
 </body>
+
 </html>
