@@ -48,3 +48,7 @@ Route::middleware('auth:api')->get('/reports/closing_counts', 'Api\ReportsContro
 
 Route::middleware('auth:api')->get('/refunds', 'Api\RefundsController@select');
 Route::middleware('auth:api')->post('/refunds', 'Api\RefundsController@store');
+
+
+Route::middleware('auth:api')->get('/balis', 'Api\BaliController@select');
+Route::middleware('auth:api')->post('/balis', 'Api\BaliController@store');
