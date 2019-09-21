@@ -16,7 +16,9 @@ class BaliController extends Controller
     public function select(Bali $items)
 	{
 
-        $data = $items->with('BaliItem')->get();
+        $data = $items->with(array('BaliItems'=>function($query){
+        $query->with('Item');
+        }))->get();
         return response($data); 
 
     }
