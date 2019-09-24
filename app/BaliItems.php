@@ -3,11 +3,19 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 class BaliItems extends Model
 {
-            use LogsActivity;
         protected $guarded = [];
-        protected static $logUnguarded = true;
+
+                public function Bali()
+		{
+		  	return $this->belongsTo('App\Bali');
+		}
+				public function Item()
+	    {
+	     	return $this->belongsTo('App\Item');
+	    }
+
 }
+	

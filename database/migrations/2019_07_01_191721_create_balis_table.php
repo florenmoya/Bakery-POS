@@ -15,7 +15,7 @@ class CreateBalisTable extends Migration
     {
         Schema::create('balis', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('users_id');
+            $table->integer('registers_activity_id');
             $table->timestamps();
         });
     }

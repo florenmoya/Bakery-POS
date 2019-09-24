@@ -22,21 +22,33 @@ class DeliveriesController extends Controller
 	{
   
                 $id = Deliver::create()->id;
-
+                //validation
                 foreach($request->items as $items)
                     {
-                        $createddata = DeliveriesItem::create([
-                        'deliveries_id' => $id,
-                        'quantity' => $items['cart_quantity'],
-                        'price' => $items['price']*$items['cart_quantity'],
-                        'item_cost' => $items['item_cost'],
-                        'item_id' => $items['id'],
-                        ]);
-                        $item = Item::find($items['id']);
+                        $item = Item::findOrFail($items['id']);
+                        if(!$item){                        
+                            return $item;
+                        }
+                    }
+                //query
+                foreach($request->items as $items)
+                    {
+                        $item = Item::findOrFail($items['id']);
+
+                            if($items['cart_quantity'] > 0){
+                            $createddata = DeliveriesItem::create([
+                            'deliveries_id' => $id,
+                            'quantity' => $items['cart_quantity'],
+                            'price' => $item['price']*$items['cart_quantity'],
+                            'item_cost' => $item['item_cost'],
+                            'item_id' => $items['id'],
+                            ]);
+
                         $item->quantity = $item->quantity + $items['cart_quantity'];
                         $item->save();
                     }
-        return response('Created', 201);
+                }
+        return response($createddata);
 	}
         public function report_deliveries()
     {

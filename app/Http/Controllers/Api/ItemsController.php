@@ -44,7 +44,7 @@ class ItemsController extends Controller
         'notes' => $request->notes
     ]);
 
-        return response($update);
+        return response('$update');
     }
     public function destroy(Request $request)
     {

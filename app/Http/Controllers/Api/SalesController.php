@@ -37,14 +37,32 @@ class SalesController extends Controller
                   }
                 $currentRegister = RegistersActivity::orderBy('created_at', 'desc')->first()->id;
                 $sales_id = Sales::create(['registers_activity_id' =>$currentRegister])->id;
+<<<<<<< HEAD
                 $query = array();
                 foreach($request->items as $items)
                     {
                         $data = SalesItem::create([
+=======
+                //validation
+                foreach($request->items as $items)
+                    {
+                        $item = Item::findOrFail($items['id']);
+                        if(!$item){                        
+                            return $item;
+                        }
+                    }
+                //query
+                foreach($request->items as $items)
+                    {
+
+                        $item = Item::findOrFail($items['id']);
+                    if($items['cart_quantity'] > 0){
+                        $createddata = SalesItem::create([
+>>>>>>> origin/master
                         'sales_id' => $sales_id,
                         'quantity' => $items['cart_quantity'],
-                        'price' => $items['price']*$items['cart_quantity'],
-                        'item_cost' => $items['item_cost'],
+                        'price' => $item['price']*$items['cart_quantity'],
+                        'item_cost' => $item['item_cost'],
                         'item_id' => $items['id'],
                         ]);
                         $query = array_merge($query, array($data));
@@ -56,7 +74,13 @@ class SalesController extends Controller
                     //     Mail::to('test@test.com')->send(new CloseRegister($item));
                     // }
                     }
+<<<<<<< HEAD
         return response($query);
+=======
+                    }
+           // Mail::to('test@test.com')->send(new SupplyDepleted());
+        return response($createddata);
+>>>>>>> origin/master
 	}
 	public function sale_register_store(Request $request)
 	{

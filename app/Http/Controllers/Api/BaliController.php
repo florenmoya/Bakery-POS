@@ -1,29 +1,32 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-use Auth;
+
 use App\Item;
-use App\Refunds;
-use App\RefundsItem;
+use App\Bali;
+use App\Sales;
+use App\SalesItem;
+use App\BaliItems;
 use App\RegistersActivity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class RefundsController extends Controller
+class BaliController extends Controller
 {
-    public function select(Refunds $items)
+    public function select(Bali $items)
 	{
 
-        $data = $items->with('RefundsItem')->get();
+        $data = $items->with(array('BaliItems'=>function($query){
+        $query->with('Item');
+        }))->get();
         return response($data); 
 
     }
     public function store(Request $request)
 	{
                 $currentRegister = RegistersActivity::orderBy('created_at', 'desc')->first()->id;
-
-                		$refunds_id = Refunds::create(['registers_activity_id' =>$currentRegister])->id;
-
+				$balis_id = Bali::create(['registers_activity_id' => $currentRegister])->id;
+                $sales_id = Sales::create(['registers_activity_id' =>$currentRegister])->id;
                 //validation
                 foreach($request->items as $items)
                     {
@@ -33,18 +36,31 @@ class RefundsController extends Controller
                         }
                     }
                 //query
-
                 foreach($request->items as $items)
                     {
-                        $item = Item::findOrFail($items['id']);
+
+                    $item = Item::findOrFail($items['id']);
+
                     if($items['cart_quantity'] > 0){
-                        $createddata = RefundsItem::create([
-                        'refunds_id' => $refunds_id,
+                        $createddata = BaliItems::create([
+                        'balis_id' => $balis_id,
                         'quantity' => $items['cart_quantity'],
                         'price' => $item['price']*$items['cart_quantity'],
                         'item_cost' => $item['item_cost'],
                         'item_id' => $items['id'],
                         ]);
+
+                        $createddata = SalesItem::create([
+                        'sales_id' => $sales_id,
+                        'quantity' => $items['cart_quantity'],
+                        'price' => $item['price']*$items['cart_quantity'],
+                        'item_cost' => $item['item_cost'],
+                        'item_id' => $items['id'],
+                        ]);
+
+                        $item = Item::find($items['id']);
+                        $item->quantity = $item->quantity - $items['cart_quantity'];
+                        $item->save();
                     }
                     }
             
