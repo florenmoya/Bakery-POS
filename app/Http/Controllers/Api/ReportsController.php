@@ -32,7 +32,7 @@ class ReportsController extends Controller
         $today = Carbon::today();
         $top_product = $items->with(array('Item'=>function($query){
         $query->with('Category');
-        }))->selectRaw('SUM(quantity) AS total_quantity, item_id')->groupBy('item_id')->orderByRaw('SUM(quantity) DESC')->whereMonth('created_at', Carbon::today())->limit(10)->get();
+        }))->selectRaw('SUM(quantity) AS total_quantity, item_id')->groupBy('item_id')->orderByRaw('SUM(quantity) DESC')->whereMonth('created_at', Carbon::today())->limit(15)->get();
 
         $restock = Item::with('Category')->where('quantity', '<=', 3)->orderBy('quantity', 'ASC')->get();
 
