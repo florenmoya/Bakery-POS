@@ -16,14 +16,14 @@ class SalesController extends Controller
         $register = SalesRegister::find(1);
         return response($register);
     }
-       public function all(Sales $items)
+       public function all(SalesItem $items)
     {
         $data = $items->all();
         return response($data); 
     }
+    
     public function store(Request $request)
     {
-  
                 $currentRegister = RegistersActivity::orderBy('created_at', 'desc')->first()->id;
                 $sales_id = Sales::create(['registers_activity_id' =>$currentRegister])->id;
                 //validation

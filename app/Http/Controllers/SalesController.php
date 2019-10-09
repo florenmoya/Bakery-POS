@@ -53,7 +53,7 @@ class SalesController extends Controller
         $cart->total($new_quantity, $id, $this->cart_name);
 
         return redirect('sales/create');
-    }
+    },
 
     public function store()
     {
@@ -86,5 +86,5 @@ class SalesController extends Controller
             }
         Session::pull($this->cart_name);
         return redirect('sales/create');
-    }
+    },
 }
