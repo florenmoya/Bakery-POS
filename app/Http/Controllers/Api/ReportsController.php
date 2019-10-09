@@ -34,7 +34,7 @@ class ReportsController extends Controller
         $query->with('Category');
         }))->selectRaw('SUM(quantity) AS total_quantity, item_id')->groupBy('item_id')->orderByRaw('SUM(quantity) DESC')->limit(10)->get();
 
-        $restock = Item::with('Category')->where('quantity', '<=', 3)->orderBy('quantity', 'DESC')->get();
+        $restock = Item::with('Category')->where('quantity', '<=', 3)->orderBy('quantity', 'ASC')->get();
 
         $month_bread_delivery = DeliveriesItem::selectRaw('SUM(price) AS total_price')->whereHas('Item', function($q){$q->where('category_id', 1);})->whereDate('created_at', Carbon::today())->get();
         $today_sales = $items->selectRaw('SUM(price) as total_price')->whereDate('created_at', Carbon::today())->get();
