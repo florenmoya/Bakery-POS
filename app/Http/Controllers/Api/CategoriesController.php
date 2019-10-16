@@ -1,46 +1,43 @@
 <?php
 
-namespace App\Http\Controllers\api;
-use App\Category;
+namespace App\Http\Controllers\Api;
+use App\Categories;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class CategoriesController extends Controller
 {
-    public function all(Category $category)
+    public function all(Categories $categories)
     {
 
-        $data = $category->all();
+        $data = $categories->all();
 
         return response($data); 
 
     }
 
-    public function store()
+    public function store(Request $request)
     {
 
-        $attributes = request()->validate([
-            'title' => ['required']
-        ]);
+        $item = new Categories;
 
-        Category::create($attributes);
-        
+        $item->name = $request->name;
+        $item->company_id = $request->user()->company_id;
+
+        $item->save();
+
         return response('Categories have been created', 201);
-
     }
     public function update(Request $request)
     {
-        $data = Category::find($request->id);
-
-        $data->title = $request->title;
-
+        $data = Categories::find($request->id);
+        $data->name = $request->name;
         $data->save();
         return response('Categories have been updated', 201);
     }
     public function destroy(Request $request)
     {
-
-        Category::findOrFail($request->categories_id)->delete();
+        Categories::findOrFail($request->id)->delete();
         return response('Category have been deleted!', 201);
     }
 }

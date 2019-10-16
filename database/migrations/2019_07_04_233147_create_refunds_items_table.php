@@ -17,8 +17,8 @@ class CreateRefundsItemsTable extends Migration
             $table->bigIncrements('id');
             $table->Integer('refunds_id');
             $table->Integer('item_id');
+            $table->Integer('company_id');
             $table->Integer('price');
-            $table->Integer('item_cost')->nullable();
             $table->Integer('quantity');
             $table->timestamps();
         });

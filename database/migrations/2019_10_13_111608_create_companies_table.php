@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBaliItemsTable extends Migration
+class CreateCompaniesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateBaliItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bali_items', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->Integer('balis_id');
-            $table->Integer('item_id');
-            $table->Integer('price');
-            $table->Integer('item_cost')->nullable();
-            $table->Integer('quantity');
+            $table->string('name');
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('region')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('phone')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateBaliItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bali_items');
+        Schema::dropIfExists('companies');
     }
 }

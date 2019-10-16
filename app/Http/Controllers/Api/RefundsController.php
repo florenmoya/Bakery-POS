@@ -5,7 +5,7 @@ use Auth;
 use App\Item;
 use App\Refunds;
 use App\RefundsItem;
-use App\RegistersActivity;
+use App\RegistersActivities;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -20,10 +20,7 @@ class RefundsController extends Controller
     }
     public function store(Request $request)
 	{
-                $currentRegister = RegistersActivity::orderBy('created_at', 'desc')->first()->id;
-
-                		$refunds_id = Refunds::create(['registers_activity_id' =>$currentRegister])->id;
-
+                $total = 0;
                 //validation
                 foreach($request->items as $items)
                     {
@@ -31,23 +28,28 @@ class RefundsController extends Controller
                         if(!$item){                        
                             return $item;
                         }
-                    }
-                //query
 
+                        $total += $items['cart_quantity']*$items['price'];
+                    }
+            $latest = RegistersActivities::where('company_id', $request->user()->company_id)->latest('created_at')->first();
+            if($latest->released_amount){ 
+                return response('Error', 401);
+            }
+            $refunds_id = Refunds::create(['company_id' => $request->user()->company_id, 'amount' => $total, 'user_id' => $request->user()->id, 'registers_activities_id' => $latest->id])->id;
+                //query
                 foreach($request->items as $items)
                     {
                         $item = Item::findOrFail($items['id']);
-                    if($items['cart_quantity'] > 0){
-                        $createddata = RefundsItem::create([
-                        'refunds_id' => $refunds_id,
-                        'quantity' => $items['cart_quantity'],
-                        'price' => $item['price']*$items['cart_quantity'],
-                        'item_cost' => $item['item_cost'],
-                        'item_id' => $items['id'],
-                        ]);
+                        if($items['cart_quantity'] > 0){
+                            $createddata = RefundsItem::create([
+                            'refunds_id' => $refunds_id,
+                            'quantity' => $items['cart_quantity'],
+                            'price' => $item['price']*$items['cart_quantity'],
+                            'item_id' => $items['id'],
+                            'company_id' => $request->user()->company_id,
+                            ]);
+                        }
                     }
-                    }
-            
         return response($createddata);
 	}
 }

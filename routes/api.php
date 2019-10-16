@@ -23,6 +23,8 @@ Route::middleware('auth:api')->post('/logout', 'Api\AuthController@logout');
 Route::post('/register', 'Api\AuthController@register');
 Route::post('/login', 'Api\AuthController@login');
 
+Route::middleware('auth:api')->get('/isLoggedIn', 'Api\AuthController@isLoggedIn');
+
 Route::middleware('auth:api')->get('/dashboard', 'Api\ReportsController@dashboard');
 
 Route::middleware('auth:api')->get('/items', 'Api\ItemsController@all');
@@ -54,3 +56,23 @@ Route::middleware('auth:api')->post('/refunds', 'Api\RefundsController@store');
 
 Route::middleware('auth:api')->get('/balis', 'Api\BaliController@select');
 Route::middleware('auth:api')->post('/balis', 'Api\BaliController@store');
+
+Route::middleware('auth:api')->get('/employee', 'Api\SettingsController@employee_list');
+Route::middleware('auth:api')->post('/employee/store', 'Api\SettingsController@employee_store');
+Route::middleware('auth:api')->post('/employee/update', 'Api\SettingsController@employee_update');
+Route::middleware('auth:api')->post('/employee/destroy', 'Api\SettingsController@employee_destroy');
+
+Route::middleware('auth:api')->get('/employee/role', 'Api\SettingsController@employee_role');
+Route::middleware('auth:api')->post('/employee/role/store', 'Api\SettingsController@employee_role_store');
+Route::middleware('auth:api')->post('/employee/role/update', 'Api\SettingsController@employee_role_update');
+Route::middleware('auth:api')->post('/employee/role/destroy', 'Api\SettingsController@employee_role_destroy');
+
+Route::middleware('auth:api')->get('/register/activities', 'Api\RegistersActivitiesController@select');
+Route::middleware('auth:api')->post('/register/activities/store', 'Api\RegistersActivitiesController@store');
+Route::middleware('auth:api')->post('/register/activities/update', 'Api\RegistersActivitiesController@update');
+Route::middleware('auth:api')->post('/register/activities/delete', 'Api\RegistersActivitiesController@destroy');
+
+Route::middleware('auth:api')->get('/companies', 'Api\CompaniesController@all');
+Route::middleware('auth:api')->post('/companies/store', 'Api\CompaniesController@store');
+Route::middleware('auth:api')->post('/companies/update', 'Api\CompaniesController@update');
+Route::middleware('auth:api')->post('/companies/delete', 'Api\CompaniesController@destroy');

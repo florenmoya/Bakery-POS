@@ -2,54 +2,68 @@
 
 namespace App\Http\Controllers\api;
 use App\Item;
-use App\Category;
+use App\Categories;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ItemsController extends Controller
 {
-   public function all(Item $items)
+   public function all(Request $request)
     {
 
-        $data = $items->with('Category')->get();
+        $data = Item::where('company_id', $request->user()->company_id)->with('Categories')->get();
         return response($data); 
 
     }
 
-    public function store()
+    public function store(Request $request)
     {
 
-        $attributes = request()->validate([
-            'description' => ['required'],
-            'quantity'  => ['required'],
-            'price'  => ['required'],
-            'item_cost'  => [],
-            'type'  => ['required'],
-            'category_id'  => ['required'],
-            'notes'  => []
-        ]);
-        $items = Item::create($attributes);
-        return response($items);
+        $item = new Item;
+
+        $item->description = $request->description;
+        $item->stock = $request->stock;
+        $item->price = $request->price;
+        $item->cost = $request->cost;
+        $item->type = $request->type;
+        $item->category_id = $request->category_id;
+        $item->notes = $request->notes;
+        $item->company_id = $request->user()->company_id;
+
+        $item->save();
+
+        return response('Item Created', 201);
         
     }
     public function update(Request $request)
     {
-        $update = Item::where('id', $request->id)
+        $update = 
+            Item::where('id', $request->id)
                 ->update([
-        'description' => $request->description,
-        'quantity' => $request->quantity,
-        'category_id' => $request->category_id,
-        'type' => $request->type,
-        'price' => $request->price,
-        'notes' => $request->notes
-    ]);
-
-        return response('$update');
+                'description' => $request->description,
+                "type" => $request->type,
+                "UPC" => null,
+                "EAN" => null,
+                "custom_SKU" => null,
+                "manufacture_SKU" => null,
+                "category_id" => $request->category_id,
+                "brand_id" => null,
+                "tags_id" => null,
+                "vendor_id" => null,
+                "reorder_point" => null,
+                "inventory_level" => null,
+                "price" => $request->price,
+                "tax" => null,
+                "msrp" => null,
+                "cost" => $request->cost,
+                "stock" => $request->stock,
+                "notes" => null,
+            ]);
+        return response($update);
     }
     public function destroy(Request $request)
     {
-
-        Item::findOrFail($request->items_id)->delete();
+        Item::findOrFail($request->id)->delete();
         return response('Item have been deleted!', 201);
     }
 }

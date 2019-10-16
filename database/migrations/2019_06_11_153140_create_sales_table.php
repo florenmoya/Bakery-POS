@@ -15,7 +15,10 @@ class CreateSalesTable extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->Integer('registers_activity_id');
+            $table->Integer('amount');
+            $table->Integer('company_id');
+            $table->Integer('user_id');
+            $table->Integer('registers_activities_id');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RegistersActivity extends Model
+class RegistersActivities extends Model
 {
         protected $guarded = [];		
 
@@ -15,9 +15,5 @@ class RegistersActivity extends Model
         public function refunds()
         {
         	return $this->hasMany('App\Refunds');
-        }
-        public function RegistersWithdrawAmount()
-        {
-        	return $this->hasMany('App\RegistersWithdrawAmount');
         }
 }

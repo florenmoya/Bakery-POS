@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Item;
 use App\Deliver;
 use App\DeliveriesItem;
+use App\RegistersActivities;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -20,8 +21,7 @@ class DeliveriesController extends Controller
 
     public function store(Request $request)
 	{
-  
-                $id = Deliver::create()->id;
+                $total = 0;
                 //validation
                 foreach($request->items as $items)
                     {
@@ -29,7 +29,14 @@ class DeliveriesController extends Controller
                         if(!$item){                        
                             return $item;
                         }
+
+                        $total += $items['cart_quantity']*$items['price'];
                     }
+            $latest = RegistersActivities::where('company_id', $request->user()->company_id)->latest('created_at')->first();
+            if($latest->released_amount){ 
+                return response('Error', 401);
+            }
+            $deliver_id = Deliver::create(['company_id' => $request->user()->company_id, 'amount' => $total, 'user_id' => $request->user()->id, 'registers_activities_id' => $latest->id])->id;
                 //query
                 foreach($request->items as $items)
                     {
@@ -37,14 +44,14 @@ class DeliveriesController extends Controller
 
                             if($items['cart_quantity'] > 0){
                             $createddata = DeliveriesItem::create([
-                            'deliveries_id' => $id,
+                            'delivery_id' => $deliver_id,
                             'quantity' => $items['cart_quantity'],
                             'price' => $item['price']*$items['cart_quantity'],
-                            'item_cost' => $item['item_cost'],
                             'item_id' => $items['id'],
+                            'company_id' => $request->user()->company_id,
                             ]);
 
-                        $item->quantity = $item->quantity + $items['cart_quantity'];
+                        $item->stock = $item->stock + $items['cart_quantity'];
                         $item->save();
                     }
                 }

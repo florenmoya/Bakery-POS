@@ -16,7 +16,10 @@ class CreateRegistersActivitiesTable extends Migration
         Schema::create('registers_activities', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->Integer('starting_amount')->nullable();
-            $table->Integer('ending_amount')->nullable();
+            $table->Integer('released_amount')->nullable();
+            $table->Integer('starting_user')->nullable();
+            $table->Integer('released_user')->nullable();
+            $table->Integer('company_id');
             $table->timestamps();
         });
     }

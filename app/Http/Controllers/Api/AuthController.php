@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Hash;
+
+
 use Auth;
 use App\User;
+use App\Companies;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -16,6 +19,16 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
+        
+        $company = new Companies;
+        $company->name = $request->company_name;
+        $company->address = $request->company_address;
+        $company->city = $request->company_city;
+        $company->region = $request->company_region;
+        $company->zip_code = $request->company_zip_code;
+        $company->phone = $request->company_phone;
+        $company->save();
+
          $validate = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
@@ -26,6 +39,7 @@ class AuthController extends Controller
             'name' => $validate['name'],
             'username' => $validate['username'],
             'password' => Hash::make($validate['password']),
+            'company_id' => $company->id,
         ]);
 
         $accessToken = $user->createToken('authToken')->accessToken;
@@ -52,5 +66,11 @@ class AuthController extends Controller
             $token->delete();
         });
         return response()->json('Logged out successfully', 200);
+    }
+
+    public function isLoggedIn(Request $request){
+        if($request->user()->username){
+            return response("Logged in", 201);
+        }
     }
 }

@@ -15,7 +15,10 @@ class CreateRefundsTable extends Migration
     {
         Schema::create('refunds', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('registers_activity_id');
+            $table->Integer('amount');
+            $table->Integer('company_id');
+            $table->Integer('user_id');
+            $table->Integer('registers_activities_id');
             $table->timestamps();
         });
     }

@@ -12,15 +12,15 @@ class Item extends Model
     {
             return $this->hasMany('App\SalesItem');
     }
-            public function DeliveriesItem()
+        public function DeliveriesItem()
     {
             return $this->hasMany('App\DeliveriesItem');
     }
-    public function Category()
+        public function Categories()
     {
-            return $this->belongsTo('App\Category');
+            return $this->belongsTo('App\Categories', 'category_id');
     }
-                public function BaliItems()
+        public function BaliItems()
     {
             return $this->hasMany('App\BaliItems');
     }
