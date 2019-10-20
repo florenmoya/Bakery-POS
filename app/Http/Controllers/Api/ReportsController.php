@@ -25,7 +25,28 @@ class ReportsController extends Controller
         $query->with('RefundsItem');
         }))->get();
         return response($RegistersActivities);
-    }	
+    }
+            public function currents_sales(Request $request)
+    {
+        $total_sales = 0;
+        $total_refunds = 0;
+
+        $RegistersActivities = RegistersActivities::where('company_id', $request->user()->company_id)->with(array('sales'=>function($query){
+        $query->with('SalesItem');
+        }))->with(array('refunds'=>function($query){
+        $query->with('RefundsItem');
+        }))->orderBy('created_at', 'desc')
+        ->limit(1)->get();
+        $starting_amount = $RegistersActivities[0]->starting_amount;
+        foreach($RegistersActivities[0]->sales as $sales){
+            $total_sales += $sales->amount;
+        }
+        foreach($RegistersActivities[0]->refunds as $refunds){
+            $total_refunds += $refunds->amount;
+        }
+        $current_sales = array('total_sales' => $total_sales, 'total_refunds' => $total_refunds, 'current_cash' => $starting_amount+$total_sales);
+        return response($current_sales);
+    }
             public function dashboard(SalesItem $items, Request $request)
     {
         

@@ -50,6 +50,8 @@ Route::middleware('auth:api')->get('/reports/sales', 'Api\SalesController@report
 Route::middleware('auth:api')->get('/reports/deliveries', 'Api\DeliveriesController@report_deliveries');
 Route::middleware('auth:api')->get('/reports/closing_counts', 'Api\ReportsController@closing_counts');
 
+Route::middleware('auth:api')->get('/currents/sales', 'Api\ReportsController@currents_sales');
+
 Route::middleware('auth:api')->get('/refunds', 'Api\RefundsController@select');
 Route::middleware('auth:api')->post('/refunds', 'Api\RefundsController@store');
 
