@@ -70,7 +70,7 @@ class AuthController extends Controller
 
     public function isLoggedIn(Request $request){
         if($request->user()->username){
-            return response("Logged in", 201);
+            return response("Logged in", 200);
         }
     }
 }
