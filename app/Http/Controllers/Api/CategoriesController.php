@@ -7,10 +7,10 @@ use App\Http\Controllers\Controller;
 
 class CategoriesController extends Controller
 {
-    public function all(Categories $categories)
+    public function all(Categories $categories, Request $request)
     {
 
-        $data = $categories->all();
+        $data = $categories->where('company_id', $request->user()->company_id)->get();
 
         return response($data); 
 
