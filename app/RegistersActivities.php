@@ -8,11 +8,11 @@ class RegistersActivities extends Model
 {
         protected $guarded = [];		
 
-        public function sales()
+        public function Sales()
         {
-        	return $this->hasMany('App\Sales');
+        	return $this->hasMany('App\Sales',);
         }
-        public function refunds()
+        public function Refunds()
         {
         	return $this->hasMany('App\Refunds');
         }
