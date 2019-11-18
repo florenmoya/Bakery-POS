@@ -81,9 +81,9 @@ class SalesController extends Controller
         SalesRegister::updateOrCreate(['id' => 1], ['active' => false]);
         return response($RegistersClosingAmount);
     }
-    public function report_sales()
+    public function report_sales(Request $request)
     {
-        $data = SalesItem::with(array('Item'=>function($query){
+        $data = SalesItem::where('company_id', $request->user()->company_id)->where('created_at', '>=', Carbon::now()->subDays(8))->with(array('Item'=>function($query){
         $query->with('Categories');}))->get();
         return response($data);
     }

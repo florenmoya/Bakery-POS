@@ -49,7 +49,8 @@ class ReportsController extends Controller
     }
             public function dashboard(SalesItem $items, Request $request)
     {
-        
+        $bread_category = Categories::where('company_id', $request->user()->company_id)->where('name', 'Bread')->get();
+
         $today = Carbon::today();
 
         $top_product = $items->where('company_id', $request->user()->company_id)->with(array('Item'=>function($query){
@@ -58,7 +59,7 @@ class ReportsController extends Controller
 
         $restock = Item::where('company_id', $request->user()->company_id)->with('Categories')->where('stock', '<=', 3)->orderBy('stock', 'ASC')->get();
 
-        $month_bread_delivery = DeliveriesItem::where('company_id', $request->user()->company_id)->selectRaw('SUM(price) AS total_price')->whereHas('Item', function($q){$q->where('category_id', 1);})->whereMonth('created_at', Carbon::today())->get();
+        $month_bread_delivery = DeliveriesItem::where('company_id', $request->user()->company_id)->selectRaw('SUM(price) AS total_price')->whereHas('Item', function($q) use($bread_category){$q->where('category_id', $bread_category[0]->id);})->whereMonth('created_at', Carbon::today())->get();
 
         $today_sales = $items->where('company_id', $request->user()->company_id)->selectRaw('SUM(price) as total_price')->whereDate('created_at', Carbon::today())->get();
 

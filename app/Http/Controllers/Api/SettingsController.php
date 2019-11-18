@@ -12,8 +12,8 @@ use App\Http\Controllers\Controller;
 
 class SettingsController extends Controller
 {
-    public function employee_list(){
-        $user = User::with('Roles')->get();
+    public function employee_list(Request $request){
+        $user = User::where('company_id', $request->user()->company_id)->with('Roles')->get();
         return response($user);
 	}
 	public function employee_store(Request $request){
