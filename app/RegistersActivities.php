@@ -10,7 +10,7 @@ class RegistersActivities extends Model
 
         public function Sales()
         {
-        	return $this->hasMany('App\Sales',);
+        	return $this->hasMany('App\Sales');
         }
         public function Refunds()
         {
