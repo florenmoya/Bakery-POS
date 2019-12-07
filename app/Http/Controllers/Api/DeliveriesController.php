@@ -11,10 +11,10 @@ use Carbon\Carbon;
 class DeliveriesController extends Controller
 {
 
-	   public function select(Deliver $items)
+	   public function select(Deliver $deliveries)
 	{
 
-        $data = $items->all();
+        $data = $deliveries->where('company_id', $request->user()->company_id)->get();
         return response($data); 
 
     }
@@ -51,17 +51,18 @@ class DeliveriesController extends Controller
                             'company_id' => $request->user()->company_id,
                             ]);
 
+                        $item->disableLogging();
                         $item->stock = $item->stock + $items['cart_quantity'];
                         $item->save();
                     }
                 }
         return response($createddata);
 	}
-        public function report_deliveries()
+        public function report_deliveries(Request $request)
     {
         $data = Deliver::with(array('DeliveriesItem'=>function($query){
         $query->with('Item');
-        }))->get();;
+        }))->where('company_id', $request->user()->company_id)->get();;
         return response($data);
     }
 }

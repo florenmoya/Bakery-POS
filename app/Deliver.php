@@ -13,6 +13,6 @@ class Deliver extends Model
 
         public function DeliveriesItem()
         {
-        	return $this->hasMany('App\DeliveriesItem' , 'deliveries_id');
+        	return $this->hasMany('App\DeliveriesItem' , 'delivery_id');
         }
 }

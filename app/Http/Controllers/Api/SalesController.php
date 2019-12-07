@@ -56,7 +56,9 @@ class SalesController extends Controller
                                 'item_id' => $items['id'],
                                 'company_id' => $request->user()->company_id,
                                 ]);
-                                
+
+                            $item->disableLogging();
+                            
                             $item = Item::find($items['id']);
                             $item->stock = $item->stock - $items['cart_quantity'];
                             $item->save();

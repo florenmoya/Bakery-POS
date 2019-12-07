@@ -49,6 +49,7 @@ Route::middleware('auth:api')->post('/deliveries', 'Api\DeliveriesController@sto
 Route::middleware('auth:api')->get('/reports/sales', 'Api\SalesController@report_sales');
 Route::middleware('auth:api')->get('/reports/deliveries', 'Api\DeliveriesController@report_deliveries');
 Route::middleware('auth:api')->get('/reports/closing_counts', 'Api\ReportsController@closing_counts');
+Route::middleware('auth:api')->get('/reports/activity_log', 'Api\ReportsController@activity_log');
 
 Route::middleware('auth:api')->get('/currents/sales', 'Api\ReportsController@currents_sales');
 

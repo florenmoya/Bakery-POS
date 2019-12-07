@@ -12,8 +12,10 @@ use App\SalesRegister;
 use App\DeliveriesItem;
 use App\RegistersActivities;
 use App\RegistersWithdrawAmount;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Spatie\Activitylog\Models\Activity;
 
 class ReportsController extends Controller
 {
@@ -69,5 +71,8 @@ class ReportsController extends Controller
         
         return response($dashboard); 
     }
-
+    public function activity_log(Request $request){
+            $activity = Activity::where('properties->attributes->company_id', $request->user()->company_id)->get();
+            return response($activity);
+    }
 }
