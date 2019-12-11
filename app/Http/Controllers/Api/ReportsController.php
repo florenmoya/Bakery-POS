@@ -30,6 +30,8 @@ class ReportsController extends Controller
     }
             public function currents_sales(Request $request)
     {
+        $negativeItems = Item::where('company_id', $request->user()->company_id)->where('stock', '<', 0)->get();
+
         $total_sales = 0;
         $total_refunds = 0;
 
@@ -46,7 +48,7 @@ class ReportsController extends Controller
         foreach($RegistersActivities[0]->refunds as $refunds){
             $total_refunds += $refunds->amount;
         }
-        $current_sales = array('total_sales' => $total_sales, 'total_refunds' => $total_refunds, 'current_cash' => $starting_amount+$total_sales);
+        $current_sales = array('total_sales' => $total_sales, 'total_refunds' => $total_refunds, 'current_cash' => $starting_amount+$total_sales, 'negativeItems' => $negativeItems);
         return response($current_sales);
     }
             public function dashboard(SalesItem $items, Request $request)

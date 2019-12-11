@@ -17,7 +17,7 @@ class SalesController extends Controller
         $register = SalesRegister::find(1);
         return response($register);
     }
-       public function all(Request $request)
+    public function all(Request $request)
     {
         $data = Sales::where('company_id', $request->user()->company_id)->get();
         return response($data); 
@@ -25,45 +25,45 @@ class SalesController extends Controller
     
     public function store(Request $request)
     {
-                $total = 0;
+        $total = 0;
                 //validation
-                foreach($request->items as $items)
-                    {
-                        $item = Item::findOrFail($items['id']);
-                        if(!$item){                        
-                            return $item;
-                        }
-
-                        $total += $items['cart_quantity']*$items['price'];
-                    }
-            $latest = RegistersActivities::where('company_id', $request->user()->company_id)->latest('created_at')->first();
-            if($latest->released_amount){ 
-                return response('Error', 401);
+        foreach($request->items as $items)
+        {
+            $item = Item::findOrFail($items['id']);
+            if(!$item){                        
+                return $item;
             }
-            $sales_id = Sales::create(['company_id' => $request->user()->company_id, 'amount' => $total, 'user_id' => $request->user()->id, 'registers_activities_id' => $latest->id])->id;
-                //query
-                foreach($request->items as $items)
-                    {
-                        //query item
-                        $item = Item::findOrFail($items['id']);
-                        //
-                        if($items['cart_quantity'] > 0){
-                            //continue if cart quantity is greater than 0
-                                $createddata = SalesItem::create([
-                                'sales_id' => $sales_id,
-                                'quantity' => $items['cart_quantity'],
-                                'price' => $item['price']*$items['cart_quantity'],
-                                'item_id' => $items['id'],
-                                'company_id' => $request->user()->company_id,
-                                ]);
 
-                            $item->disableLogging();
-                            
-                            $item = Item::find($items['id']);
-                            $item->stock = $item->stock - $items['cart_quantity'];
-                            $item->save();
-                        }
-                    }
+            $total += $items['cart_quantity']*$items['price'];
+        }
+        $latest = RegistersActivities::where('company_id', $request->user()->company_id)->latest('created_at')->first();
+        if($latest->released_amount){ 
+            return response('Error', 401);
+        }
+        $sales_id = Sales::create(['company_id' => $request->user()->company_id, 'amount' => $total, 'user_id' => $request->user()->id, 'registers_activities_id' => $latest->id])->id;
+                //query
+        foreach($request->items as $items)
+        {
+                        //query item
+            $item = Item::findOrFail($items['id']);
+                        //
+            if($items['cart_quantity'] > 0){
+                            //continue if cart quantity is greater than 0
+                $createddata = SalesItem::create([
+                    'sales_id' => $sales_id,
+                    'quantity' => $items['cart_quantity'],
+                    'price' => $item['price']*$items['cart_quantity'],
+                    'item_id' => $items['id'],
+                    'company_id' => $request->user()->company_id,
+                ]);
+
+                activity()->disableLogging();
+                
+                $item = Item::find($items['id']);
+                $item->stock = $item->stock - $items['cart_quantity'];
+                $item->save();
+            }
+        }
            // Mail::to('test@test.com')->send(new SupplyDepleted());
         return response($createddata);
     }
@@ -86,7 +86,7 @@ class SalesController extends Controller
     public function report_sales(Request $request)
     {
         $data = SalesItem::where('company_id', $request->user()->company_id)->where('created_at', '>=', Carbon::now()->subDays(8))->with(array('Item'=>function($query){
-        $query->with('Categories');}))->get();
+            $query->with('Categories');}))->get();
         return response($data);
     }
 }

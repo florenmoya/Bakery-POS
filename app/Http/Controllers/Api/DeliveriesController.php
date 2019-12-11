@@ -51,7 +51,7 @@ class DeliveriesController extends Controller
                             'company_id' => $request->user()->company_id,
                             ]);
 
-                        $item->disableLogging();
+                        activity()->disableLogging();
                         $item->stock = $item->stock + $items['cart_quantity'];
                         $item->save();
                     }
