@@ -2047,6 +2047,7 @@
         },
         {
             "name": "phpoption/phpoption",
+<<<<<<< HEAD
             "version": "1.7.0",
             "source": {
                 "type": "git",
@@ -2057,6 +2058,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/318ad673ba36e53e10ca510aec1c54b4f2a5f2ae",
                 "reference": "318ad673ba36e53e10ca510aec1c54b4f2a5f2ae",
+=======
+            "version": "1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/php-option.git",
+                "reference": "100a25207566930efd926cf205542946aa692e01"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/100a25207566930efd926cf205542946aa692e01",
+                "reference": "100a25207566930efd926cf205542946aa692e01",
+>>>>>>> a199b7fdb36036aa1ee20c15b1255f040feacb9d
                 "shasum": ""
             },
             "require": {
@@ -2098,7 +2111,11 @@
                 "php",
                 "type"
             ],
+<<<<<<< HEAD
             "time": "2019-12-13T00:10:22+00:00"
+=======
+            "time": "2019-12-14T13:46:39+00:00"
+>>>>>>> a199b7fdb36036aa1ee20c15b1255f040feacb9d
         },
         {
             "name": "phpseclib/phpseclib",
