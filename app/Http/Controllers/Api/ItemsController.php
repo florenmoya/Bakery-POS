@@ -5,7 +5,7 @@ use App\Item;
 use App\Categories;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Storage;
 class ItemsController extends Controller
 {
  public function all(Request $request)
@@ -18,19 +18,21 @@ class ItemsController extends Controller
 
 public function store(Request $request)
 {
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+    $imageName = '';
+    if (preg_match('/^data:image\/(\w+);base64,/', $request->image)) {
+    $image = substr($request->image, strpos($request->image, ',') + 1);
 
-        $imageName = time().'.'.$request->image->getClientOriginalExtension();
 
-        $request->image->move(public_path('uploads'), $imageName);
+        $imageName = time().'.'.str_random(10).'.png';
 
-return $imageName;
+        \File::put(public_path('images'). '/' . $imageName, base64_decode($image));
+
+    }
 
     $item = new Item;
 
     $item->description = $request->description;
+    $item->image = $imageName;
     $item->stock = $request->stock;
     $item->price = $request->price;
     $item->cost = $request->cost;
